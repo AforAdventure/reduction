@@ -79,6 +79,12 @@
   }
   footer a { color: inherit; }
   .status { color: var(--muted); padding: 1.5rem 0; }
+  .demo {
+    border: 1px solid var(--warn); border-left-width: 4px;
+    border-radius: .5rem; padding: .8rem 1rem; margin-bottom: 1.25rem;
+    color: var(--ink); font-size: .88rem; background: var(--panel);
+  }
+  .demo strong { color: var(--warn); }
 </style>
 </head>
 <body>
@@ -93,6 +99,12 @@
 
   <div class="controls">
     <select id="city" aria-label="Choose a city"></select>
+  </div>
+
+  <div id="demo" class="demo" hidden>
+    <strong>Demo data.</strong> These restaurants are invented — fictional
+    venues, invented ratings, invented Michelin awards — used to develop and
+    test the ranking. Nothing here describes a real place.
   </div>
 
   <div id="results" class="status">Loading…</div>
@@ -180,6 +192,7 @@ async function loadCity(slug) {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
 
+    document.getElementById("demo").hidden = !data.synthetic;
     resultsEl.className = "";
     resultsEl.replaceChildren(...data.restaurants.map(card));
     generatedEl.textContent =

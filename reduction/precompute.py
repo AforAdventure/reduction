@@ -95,6 +95,7 @@ def build_city(
     listings: List[Listing],
     limit: int,
     min_platforms: int,
+    synthetic: bool = False,
 ) -> Dict:
     results = rank(
         listings,
@@ -108,6 +109,10 @@ def build_city(
         "slug": slugify(city["name"]),
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "listings_considered": len(listings),
+        # Travels with the data so the page can say so out loud. A published
+        # ranking of invented restaurants that does not announce itself is
+        # indistinguishable from a real one, which is not acceptable.
+        "synthetic": synthetic,
         "restaurants": [_serialize(r, i) for i, r in enumerate(results, start=1)],
     }
 
@@ -158,7 +163,10 @@ def main(argv=None) -> int:
             print("skip {}: {}".format(name, exc), file=sys.stderr)
             continue
 
-        payload = build_city(city, listings, args.limit, args.min_platforms)
+        payload = build_city(
+            city, listings, args.limit, args.min_platforms,
+            synthetic=args.dry_run,
+        )
         if not payload["restaurants"]:
             print("skip {}: nothing ranked".format(name), file=sys.stderr)
             continue
@@ -181,6 +189,7 @@ def main(argv=None) -> int:
         json.dumps(
             {
                 "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "synthetic": args.dry_run,
                 "cities": sorted(index, key=lambda c: c["name"]),
             },
             ensure_ascii=False,
