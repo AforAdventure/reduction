@@ -29,7 +29,7 @@ from ..http import HttpError, JsonClient
 from ..models import Listing, Platform
 from .base import ProviderError
 
-ENDPOINT = "https://terra.tripadvisor.com/api/catalog/locations/nearby"
+NEARBY_ENDPOINT = "https://terra.tripadvisor.com/api/catalog/locations/nearby"
 
 # The API caps a page at 20 regardless of what you ask for. Encoding that here
 # means the pagination loop below is honest about how many calls it will make.
@@ -160,7 +160,7 @@ class TerraProvider:
         for page in range(1, pages + 1):
             try:
                 payload = self.client.get(
-                    ENDPOINT,
+                    NEARBY_ENDPOINT,
                     {
                         "lat": city.lat,
                         "lon": city.lon,
