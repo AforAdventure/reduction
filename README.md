@@ -52,6 +52,7 @@ network, so the whole thing is testable without mocks.
 | `reduction/pipeline.py` | Wires the stages together; output formatting |
 | `reduction/precompute.py` | Builds the static JSON the site serves |
 | `reduction/http.py` | Throttled, retrying, disk-cached JSON client |
+| `reduction/cities.py` | `City` — a place with a position and an extent, not a string |
 | `reduction/providers/` | One module per data source; all satisfy `Provider` |
 | `data/fixtures/` | Synthetic city data (fictional venues, invented ratings) |
 
@@ -89,6 +90,21 @@ Michelin publishes no API and prohibits scraping the guide, so each city has a
 hand-curated file in `data/michelin/`. See the `_howto` block in
 `data/michelin/lisbon.json` for the schema. Cities with no file simply get no
 awards — that is the normal case, not an error.
+
+## Data sources
+
+**Terra** (`providers/terra.py`) is the primary TripAdvisor source. It returns
+ratings and review counts in its list response, so a page of 20 restaurants
+costs one call — where the older Content API charges a call per venue. Thirty
+cities at 40 venues each is **60 calls per refresh**, comfortably inside a
+5,000/month free tier even at daily cadence.
+
+Terra locates by coordinates, so every city in `data/cities.json` carries a
+`lat`, `lon`, and `radius_km`. The radius is tuned per city: 2 km for compact
+old towns, 8 km for Los Angeles.
+
+The Content API provider (`providers/tripadvisor.py`) is kept because it
+searches by name, which is handy for a city you have not geocoded.
 
 ## Setup
 

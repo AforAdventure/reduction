@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from typing import Dict, List
 
+from ..cities import City
 from ..models import Listing, Platform
 from .base import ProviderError
 
@@ -43,20 +44,19 @@ class FixtureProvider:
     def __init__(self, directory: Path = FIXTURE_DIR) -> None:
         self.directory = Path(directory)
 
-    def _path_for(self, city: str) -> Path:
-        slug = city.strip().lower().replace(" ", "-")
-        return self.directory / "{}.json".format(slug)
+    def _path_for(self, city: City) -> Path:
+        return self.directory / "{}.json".format(city.slug)
 
     def available_cities(self) -> List[str]:
         return sorted(p.stem for p in self.directory.glob("*.json"))
 
-    def search(self, city: str, limit: int = 50) -> List[Listing]:
+    def search(self, city: City, limit: int = 50) -> List[Listing]:
         path = self._path_for(city)
         if not path.exists():
             raise ProviderError(
                 Platform.GOOGLE,
                 "no fixture for {!r}; have: {}".format(
-                    city, ", ".join(self.available_cities()) or "none"
+                    city.name, ", ".join(self.available_cities()) or "none"
                 ),
             )
         payload = json.loads(path.read_text(encoding="utf-8"))

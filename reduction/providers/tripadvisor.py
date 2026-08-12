@@ -1,7 +1,9 @@
 """TripAdvisor Content API provider.
 
-Chosen as the first live source because it has a free tier and the best
-European coverage of any major review platform.
+SUPERSEDED by terra.py for most purposes — Terra returns ratings and review
+counts in its list response, where this API charges you a call per venue to
+get them. Kept because it searches by name rather than coordinates, which is
+still useful for a city you have not geocoded.
 
 QUOTA MATTERS HERE, so understand the shape of it before you run this. The
 API is two-stage: a search returns location IDs and names but no ratings, so
@@ -25,6 +27,7 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List, Optional
 
+from ..cities import City
 from ..http import HttpError, JsonClient
 from ..models import Listing, Platform
 from .base import ProviderError
@@ -89,12 +92,12 @@ class TripAdvisorProvider:
 
     # -- API calls -------------------------------------------------------
 
-    def _search(self, city: str, limit: int) -> List[Dict[str, Any]]:
+    def _search(self, city: City, limit: int) -> List[Dict[str, Any]]:
         payload = self.client.get(
             "{}/location/search".format(BASE_URL),
             {
                 "key": self.api_key,
-                "searchQuery": city,
+                "searchQuery": city.label,
                 "category": "restaurants",
                 "language": self.language,
             },
@@ -150,7 +153,7 @@ class TripAdvisorProvider:
 
     # -- the Provider contract -------------------------------------------
 
-    def search(self, city: str, limit: int = 30) -> List[Listing]:
+    def search(self, city: City, limit: int = 30) -> List[Listing]:
         try:
             hits = self._search(city, limit)
         except HttpError as exc:

@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from typing import List, Protocol, runtime_checkable
 
+from ..cities import City
 from ..models import Listing, Platform
 
 
@@ -21,8 +22,14 @@ class Provider(Protocol):
 
     platform: Platform
 
-    def search(self, city: str, limit: int = 50) -> List[Listing]:
+    def search(self, city: City, limit: int = 50) -> List[Listing]:
         """Return restaurant listings for `city`.
+
+        Takes a `City`, not a name. Providers disagree about what locating a
+        city even means — Terra wants coordinates and a radius, the Content
+        API wants a search phrase — and a bare string silently favoured one
+        of them. A provider that needs coordinates and is handed a City
+        without them should raise ProviderError, not guess.
 
         `limit` is PER PLATFORM, not a cap on the returned list. A real
         provider speaks for one platform, so the distinction looks academic —

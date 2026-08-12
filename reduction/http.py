@@ -91,7 +91,12 @@ class JsonClient:
             time.sleep(self.min_interval - elapsed)
         self._last_request = time.time()
 
-    def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Any:
+    def get(
+        self,
+        url: str,
+        params: Optional[Dict[str, Any]] = None,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Any:
         if params:
             url = "{}?{}".format(url, urllib.parse.urlencode(params))
 
@@ -100,10 +105,12 @@ class JsonClient:
             self.cache_hits += 1
             return cached
 
-        request = urllib.request.Request(
-            url,
-            headers={"Accept": "application/json", "User-Agent": self.user_agent},
-        )
+        # Auth headers are deliberately NOT part of the cache key. The key
+        # identifies who is asking, not what was asked for, and two keys
+        # requesting the same URL should hit the same cached answer.
+        merged = {"Accept": "application/json", "User-Agent": self.user_agent}
+        merged.update(headers or {})
+        request = urllib.request.Request(url, headers=merged)
 
         last_error: Optional[Exception] = None
         for attempt in range(self.max_retries):

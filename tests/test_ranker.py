@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import unittest
 
+from reduction.cities import City
 from reduction.matching import DisjointSet, cluster_listings, haversine_m, is_match
 from reduction.models import PROFILES, Listing, Platform
 from reduction.normalize import (
@@ -197,7 +198,7 @@ class TestScoring(unittest.TestCase):
 
 class TestPipeline(unittest.TestCase):
     def setUp(self):
-        self.listings = FixtureProvider().search("Lisbon", limit=500)
+        self.listings = FixtureProvider().search(City("Lisbon"), limit=500)
 
     def test_fixture_loads(self):
         self.assertGreater(len(self.listings), 30)

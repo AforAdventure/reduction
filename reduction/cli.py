@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import sys
 
+from .cities import City, find_city
 from .pipeline import DEFAULT_MIN_REVIEWS, format_table, rank
 from .providers import FixtureProvider, ProviderError
 
@@ -33,9 +34,13 @@ def main(argv=None) -> int:
     )
     args = parser.parse_args(argv)
 
+    # Use the configured city if we know it (it carries coordinates), and
+    # fall back to a bare name so the CLI still works for anything else.
+    city = find_city(args.city) or City(name=args.city)
+
     provider = FixtureProvider()
     try:
-        listings = provider.search(args.city, limit=500)
+        listings = provider.search(city, limit=500)
     except ProviderError as exc:
         print("error: {}".format(exc), file=sys.stderr)
         return 1
@@ -45,9 +50,9 @@ def main(argv=None) -> int:
         limit=args.limit,
         min_platforms=args.min_platforms,
         min_total_reviews=args.min_reviews,
-        city=args.city,
+        city=city.name,
     )
-    print(format_table(results, city=args.city))
+    print(format_table(results, city=city.label))
     return 0
 
 

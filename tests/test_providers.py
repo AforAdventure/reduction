@@ -12,9 +12,10 @@ from __future__ import annotations
 
 import unittest
 
+from reduction.cities import City
 from reduction.http import HttpError
 from reduction.models import Platform
-from reduction.precompute import build_city, slugify
+from reduction.precompute import build_city
 from reduction.providers.base import ProviderError
 from reduction.providers.tripadvisor import TripAdvisorProvider, _parse_price
 from reduction.providers import FixtureProvider
@@ -86,13 +87,13 @@ class TestTripAdvisorProvider(unittest.TestCase):
 
     def test_returns_only_usable_listings(self):
         provider = TripAdvisorProvider(api_key="k", client=FakeClient())
-        listings = provider.search("Lisbon")
+        listings = provider.search(City("Lisbon"))
         # Row 3 has no coordinates, row 4 is a 404, row 5 has no id.
         self.assertEqual([x.platform_id for x in listings], ["1", "2"])
 
     def test_parses_string_numbers(self):
         provider = TripAdvisorProvider(api_key="k", client=FakeClient())
-        first = provider.search("Lisbon")[0]
+        first = provider.search(City("Lisbon"))[0]
         self.assertAlmostEqual(first.lat, 38.71503)
         self.assertEqual(first.review_count, 1840)
         self.assertEqual(first.rating, 4.5)
@@ -100,20 +101,20 @@ class TestTripAdvisorProvider(unittest.TestCase):
 
     def test_optional_fields_default_to_none(self):
         provider = TripAdvisorProvider(api_key="k", client=FakeClient())
-        second = provider.search("Lisbon")[1]
+        second = provider.search(City("Lisbon"))[1]
         self.assertIsNone(second.address)
         self.assertIsNone(second.price_level)
 
     def test_one_broken_venue_does_not_sink_the_others(self):
         provider = TripAdvisorProvider(api_key="k", client=FakeClient({"1": 500}))
-        self.assertEqual([x.platform_id for x in provider.search("Lisbon")], ["2"])
+        self.assertEqual([x.platform_id for x in provider.search(City("Lisbon"))], ["2"])
 
     def test_a_rejected_key_stops_everything(self):
         # A 500 on one venue is bad luck. A 401 is a broken configuration, and
         # grinding through 200 more calls to confirm it helps nobody.
         provider = TripAdvisorProvider(api_key="k", client=FakeClient({"1": 401}))
         with self.assertRaises(ProviderError):
-            provider.search("Lisbon")
+            provider.search(City("Lisbon"))
 
     def test_price_parsing(self):
         self.assertEqual(_parse_price("$$ - $$$"), 3)
@@ -123,14 +124,14 @@ class TestTripAdvisorProvider(unittest.TestCase):
 
 
 class TestPrecompute(unittest.TestCase):
-    def test_slugify(self):
-        self.assertEqual(slugify("  New York "), "new-york")
+    def test_slug(self):
+        self.assertEqual(City("  New York ").slug, "new-york")
 
     def test_builds_a_serializable_payload(self):
         import json
 
-        listings = FixtureProvider().search("Lisbon", limit=500)
-        payload = build_city({"name": "Lisbon", "country": "PT"}, listings, 10, 1)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
+        payload = build_city(City("Lisbon", "PT"), listings, 10, 1)
 
         self.assertEqual(payload["slug"], "lisbon")
         self.assertEqual(len(payload["restaurants"]), 10)
@@ -139,8 +140,8 @@ class TestPrecompute(unittest.TestCase):
         json.dumps(payload)  # Must survive the trip to the browser.
 
     def test_ranks_are_sequential(self):
-        listings = FixtureProvider().search("Lisbon", limit=500)
-        payload = build_city({"name": "Lisbon", "country": "PT"}, listings, 10, 1)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
+        payload = build_city(City("Lisbon", "PT"), listings, 10, 1)
         ranks = [r["rank"] for r in payload["restaurants"]]
         self.assertEqual(ranks, list(range(1, 11)))
 

@@ -12,6 +12,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from reduction.cities import City
 from reduction.distinctions import MichelinIndex
 from reduction.matching import cluster_listings
 from reduction.models import Distinction, Listing, Platform
@@ -31,7 +32,7 @@ class TestMichelinIndex(unittest.TestCase):
         self.assertEqual(index.entries, [])
 
     def test_awards_attach_to_the_right_venue(self):
-        listings = FixtureProvider().search("Lisbon", limit=500)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
         venues = MichelinIndex.for_city("Lisbon").annotate(cluster_listings(listings))
         awarded = {
             v.display_name: v.distinctions for v in venues if v.distinctions
@@ -46,7 +47,7 @@ class TestMichelinIndex(unittest.TestCase):
     def test_matches_across_name_spellings(self):
         # The guide says "Taberna do Marquês"; Yelp says "Taberna do Marques".
         # Matching must consider every spelling the venue carries.
-        listings = FixtureProvider().search("Lisbon", limit=500)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
         venues = MichelinIndex.for_city("Lisbon").annotate(cluster_listings(listings))
         taberna = next(v for v in venues if "Marqu" in v.display_name)
         self.assertEqual(taberna.distinctions, [Distinction.ONE_STAR])
@@ -128,12 +129,12 @@ class TestDistinctionScoring(unittest.TestCase):
 
 class TestPipelineIntegration(unittest.TestCase):
     def test_rank_without_a_city_awards_nothing(self):
-        listings = FixtureProvider().search("Lisbon", limit=500)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
         results = rank(listings, limit=10)
         self.assertTrue(all(not r.venue.distinctions for r in results))
 
     def test_rank_with_a_city_applies_awards(self):
-        listings = FixtureProvider().search("Lisbon", limit=500)
+        listings = FixtureProvider().search(City("Lisbon"), limit=500)
         results = rank(listings, limit=10, city="Lisbon")
         self.assertTrue(any(r.venue.distinctions for r in results))
         self.assertEqual(results[0].venue.display_name, "Quinta das Rosas")

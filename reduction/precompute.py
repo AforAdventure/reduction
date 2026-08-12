@@ -28,24 +28,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List
 
+from .cities import City, load_cities
 from .models import Listing, ScoredVenue
 from .pipeline import rank
-from .providers import FixtureProvider, ProviderError
-from .providers.tripadvisor import TripAdvisorProvider
+from .providers import FixtureProvider, ProviderError, TerraProvider
 
 ROOT = Path(__file__).resolve().parent.parent
-CITIES_FILE = ROOT / "data" / "cities.json"
 OUTPUT_DIR = ROOT / "site" / "data"
 CACHE_DIR = ROOT / ".cache" / "http"
-
-
-def slugify(city: str) -> str:
-    return city.strip().lower().replace(" ", "-").replace(",", "")
-
-
-def load_cities(path: Path = CITIES_FILE) -> List[Dict[str, str]]:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return payload["cities"]
 
 
 def _serialize(result: ScoredVenue, position: int) -> Dict:
@@ -91,7 +81,7 @@ def _serialize(result: ScoredVenue, position: int) -> Dict:
 
 
 def build_city(
-    city: Dict[str, str],
+    city: City,
     listings: List[Listing],
     limit: int,
     min_platforms: int,
@@ -101,12 +91,12 @@ def build_city(
         listings,
         limit=limit,
         min_platforms=min_platforms,
-        city=city["name"],
+        city=city.name,
     )
     return {
-        "city": city["name"],
-        "country": city.get("country"),
-        "slug": slugify(city["name"]),
+        "city": city.name,
+        "country": city.country,
+        "slug": city.slug,
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "listings_considered": len(listings),
         # Travels with the data so the page can say so out loud. A published
@@ -121,7 +111,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Precompute city rankings.")
     parser.add_argument("--limit", type=int, default=10)
     parser.add_argument("--min-platforms", type=int, default=1)
-    parser.add_argument("--per-city", type=int, default=30, help="Venues to fetch.")
+    parser.add_argument("--per-city", type=int, default=40, help="Venues to fetch.")
     parser.add_argument("--only", help="Slug of a single city to build.")
     parser.add_argument(
         "--dry-run",
@@ -133,7 +123,7 @@ def main(argv=None) -> int:
 
     cities = load_cities()
     if args.only:
-        cities = [c for c in cities if slugify(c["name"]) == args.only]
+        cities = [c for c in cities if c.slug == args.only]
         if not cities:
             print("error: no city with slug {!r}".format(args.only), file=sys.stderr)
             return 1
@@ -142,9 +132,7 @@ def main(argv=None) -> int:
         provider = FixtureProvider()
     else:
         try:
-            provider = TripAdvisorProvider(
-                client=_cached_client(),
-            )
+            provider = TerraProvider(client=_cached_client())
         except ProviderError as exc:
             print("error: {}".format(exc), file=sys.stderr)
             return 1
@@ -154,9 +142,9 @@ def main(argv=None) -> int:
     started = time.time()
 
     for city in cities:
-        name = city["name"]
+        name = city.label
         try:
-            listings = provider.search(name, limit=args.per_city)
+            listings = provider.search(city, limit=args.per_city)
         except ProviderError as exc:
             # A city we cannot fetch is a city we skip. One failure must not
             # abandon the nineteen cities queued behind it.
