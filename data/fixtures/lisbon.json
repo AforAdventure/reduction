@@ -1,0 +1,57 @@
+{
+  "_note": "SYNTHETIC test data. Every venue below is fictional and every rating invented. Used to develop and test the ranking pipeline without hitting a live API.",
+  "city": "Lisbon",
+  "country": "PT",
+  "listings": [
+    { "platform": "google",      "platform_id": "g-001", "name": "Taberna do Marquês",        "lat": 38.71500, "lon": -9.14000, "rating": 4.7, "review_count": 3120, "price_level": 3 },
+    { "platform": "tripadvisor", "platform_id": "t-001", "name": "Taberna do Marques Lda",    "lat": 38.71503, "lon": -9.13996, "rating": 4.5, "review_count": 1840 },
+    { "platform": "yelp",        "platform_id": "y-001", "name": "Taberna do Marques",        "lat": 38.71495, "lon": -9.14008, "rating": 4.3, "review_count": 210 },
+    { "platform": "foursquare",  "platform_id": "f-001", "name": "Taberna do Marques",        "lat": 38.71508, "lon": -9.14005, "rating": 8.9, "review_count": 430 },
+
+    { "platform": "google",      "platform_id": "g-002", "name": "Casa Vermelha",             "lat": 38.71600, "lon": -9.14200, "rating": 5.0, "review_count": 11 },
+
+    { "platform": "google",      "platform_id": "g-003", "name": "Bistro Azul",               "lat": 38.71350, "lon": -9.13850, "rating": 4.8, "review_count": 900 },
+    { "platform": "yelp",        "platform_id": "y-003", "name": "Bistro Azul",               "lat": 38.71346, "lon": -9.13858, "rating": 3.2, "review_count": 140 },
+    { "platform": "tripadvisor", "platform_id": "t-003", "name": "Bistrô Azul",               "lat": 38.71353, "lon": -9.13847, "rating": 4.1, "review_count": 380 },
+
+    { "platform": "google",      "platform_id": "g-004", "name": "O Pátio das Oliveiras",     "lat": 38.71420, "lon": -9.14500, "rating": 4.6, "review_count": 1450, "price_level": 2 },
+    { "platform": "tripadvisor", "platform_id": "t-004", "name": "Patio das Oliveiras",       "lat": 38.71425, "lon": -9.14494, "rating": 4.5, "review_count": 990 },
+    { "platform": "foursquare",  "platform_id": "f-004", "name": "O Patio das Oliveiras",     "lat": 38.71417, "lon": -9.14507, "rating": 8.6, "review_count": 260 },
+
+    { "platform": "google",      "platform_id": "g-005", "name": "Cervejaria Silva",          "lat": 38.71280, "lon": -9.14120, "rating": 4.4, "review_count": 2600, "price_level": 2 },
+    { "platform": "yelp",        "platform_id": "y-005", "name": "Cervejaria Silva",          "lat": 38.71285, "lon": -9.14113, "rating": 3.9, "review_count": 320 },
+    { "platform": "tripadvisor", "platform_id": "t-005", "name": "Cervejaria Silva",          "lat": 38.71276, "lon": -9.14126, "rating": 4.2, "review_count": 1500 },
+    { "platform": "foursquare",  "platform_id": "f-005", "name": "Cervejaria Silva",          "lat": 38.71283, "lon": -9.14118, "rating": 8.0, "review_count": 510 },
+
+    { "platform": "google",      "platform_id": "g-006", "name": "Bella Vista",               "lat": 38.71550, "lon": -9.14380, "rating": 4.5, "review_count": 720 },
+    { "platform": "tripadvisor", "platform_id": "t-006", "name": "Bella Vista Restaurante",   "lat": 38.71554, "lon": -9.14375, "rating": 4.4, "review_count": 510 },
+
+    { "platform": "google",      "platform_id": "g-007", "name": "Adega do Chiado",           "lat": 38.71560, "lon": -9.14330, "rating": 4.2, "review_count": 380 },
+    { "platform": "yelp",        "platform_id": "y-007", "name": "Adega do Chiado",           "lat": 38.71557, "lon": -9.14336, "rating": 3.6, "review_count": 95 },
+
+    { "platform": "google",      "platform_id": "g-008", "name": "Café Adélia",               "lat": 38.71200, "lon": -9.13950, "rating": 4.6, "review_count": 1120, "price_level": 1 },
+    { "platform": "yelp",        "platform_id": "y-008", "name": "Cafe Adelia",               "lat": 38.71196, "lon": -9.13957, "rating": 4.1, "review_count": 180 },
+    { "platform": "tripadvisor", "platform_id": "t-008", "name": "Adelia Restaurante",        "lat": 38.71204, "lon": -9.13944, "rating": 4.4, "review_count": 640 },
+
+    { "platform": "google",      "platform_id": "g-009", "name": "Pastelaria Central",        "lat": 38.71100, "lon": -9.13700, "rating": 4.1, "review_count": 8900, "price_level": 1 },
+    { "platform": "tripadvisor", "platform_id": "t-009", "name": "Pastelaria Central",        "lat": 38.71105, "lon": -9.13693, "rating": 3.9, "review_count": 2200 },
+
+    { "platform": "foursquare",  "platform_id": "f-010", "name": "Mercado do Peixe",          "lat": 38.71000, "lon": -9.14400, "rating": 9.2, "review_count": 85 },
+
+    { "platform": "google",      "platform_id": "g-011", "name": "Quinta das Rosas",          "lat": 38.71750, "lon": -9.14650, "rating": 4.8, "review_count": 1980, "price_level": 4 },
+    { "platform": "yelp",        "platform_id": "y-011", "name": "Quinta das Rosas",          "lat": 38.71746, "lon": -9.14658, "rating": 4.4, "review_count": 260 },
+    { "platform": "tripadvisor", "platform_id": "t-011", "name": "Quinta das Rosas",          "lat": 38.71754, "lon": -9.14643, "rating": 4.7, "review_count": 1210 },
+    { "platform": "foursquare",  "platform_id": "f-011", "name": "Quinta das Rosas",          "lat": 38.71752, "lon": -9.14647, "rating": 9.0, "review_count": 380 },
+
+    { "platform": "google",      "platform_id": "g-012", "name": "Tasca do Rio",              "lat": 38.71450, "lon": -9.13720, "rating": 4.5, "review_count": 1400, "price_level": 2 },
+    { "platform": "google",      "platform_id": "g-013", "name": "Tasca do Rio (Baixa)",      "lat": 38.71453, "lon": -9.13716, "rating": 4.3, "review_count": 40 },
+    { "platform": "yelp",        "platform_id": "y-012", "name": "Tasca do Rio",              "lat": 38.71447, "lon": -9.13727, "rating": 4.0, "review_count": 155 },
+
+    { "platform": "google",      "platform_id": "g-014", "name": "Churrasqueira Lima",        "lat": 38.71320, "lon": -9.14550, "rating": 4.0, "review_count": 560, "price_level": 1 },
+    { "platform": "yelp",        "platform_id": "y-014", "name": "Churrasqueira Lima",        "lat": 38.71324, "lon": -9.14544, "rating": 3.4, "review_count": 70 },
+
+    { "platform": "google",      "platform_id": "g-015", "name": "Sushi Norte",               "lat": 38.71680, "lon": -9.13900, "rating": 4.3, "review_count": 430, "price_level": 3 },
+    { "platform": "tripadvisor", "platform_id": "t-015", "name": "Sushi Norte",               "lat": 38.71684, "lon": -9.13894, "rating": 4.0, "review_count": 210 },
+    { "platform": "foursquare",  "platform_id": "f-015", "name": "Sushi Norte",               "lat": 38.71677, "lon": -9.13906, "rating": 7.8, "review_count": 120 }
+  ]
+}

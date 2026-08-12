@@ -1,0 +1,40 @@
+{
+  "_note": "SYNTHETIC test data matching data/fixtures/lisbon.json. Every venue is fictional and every award invented. Real cities need real entries — see below.",
+  "_howto": [
+    "One file per city, named <slug>.json, matching data/cities.json.",
+    "Populate by hand from the published Michelin Guide for that city.",
+    "Michelin has no API and prohibits scraping the guide; curate manually.",
+    "Coordinates only need to be within ~150m — they are for matching, not display.",
+    "Re-check each city when the guide for that country is announced (annually).",
+    "Valid awards: three_stars, two_stars, one_star, bib_gourmand, green_star.",
+    "A venue may hold several, e.g. [\"two_stars\", \"green_star\"]."
+  ],
+  "city": "Lisbon",
+  "guide_year": 2026,
+  "entries": [
+    {
+      "name": "Quinta das Rosas",
+      "lat": 38.71752,
+      "lon": -9.14648,
+      "awards": ["two_stars", "green_star"]
+    },
+    {
+      "name": "Taberna do Marquês",
+      "lat": 38.71501,
+      "lon": -9.14001,
+      "awards": ["one_star"]
+    },
+    {
+      "name": "Cervejaria Silva",
+      "lat": 38.71281,
+      "lon": -9.14119,
+      "awards": ["bib_gourmand"]
+    },
+    {
+      "name": "Café Adélia",
+      "lat": 38.71201,
+      "lon": -9.13951,
+      "awards": ["bib_gourmand"]
+    }
+  ]
+}

@@ -1,0 +1,430 @@
+{
+ "city": "Lisbon",
+ "country": "PT",
+ "slug": "lisbon",
+ "generated_at": "2026-08-12T13:31:41+00:00",
+ "listings_considered": 37,
+ "restaurants": [
+  {
+   "rank": 1,
+   "name": "Quinta das Rosas",
+   "score": 66.51,
+   "lat": 38.717505,
+   "lon": -9.146495,
+   "total_reviews": 3830,
+   "corroboration": 0.83,
+   "distinctions": [
+    {
+     "code": "two_stars",
+     "label": "Two Michelin Stars",
+     "short": "★★"
+    },
+    {
+     "code": "green_star",
+     "label": "Michelin Green Star",
+     "short": "Green"
+    }
+   ],
+   "distinction_bonus": 5.0,
+   "disagreement": 2.15,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 9.0,
+     "scale_max": 10.0,
+     "reviews": 380,
+     "normalized": 66.46,
+     "url": null
+    },
+    {
+     "platform": "google",
+     "rating": 4.8,
+     "scale_max": 5.0,
+     "reviews": 1980,
+     "normalized": 64.8,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.7,
+     "scale_max": 5.0,
+     "reviews": 1210,
+     "normalized": 63.65,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 4.4,
+     "scale_max": 5.0,
+     "reviews": 260,
+     "normalized": 60.56,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 4
+  },
+  {
+   "rank": 2,
+   "name": "Taberna do Marquês",
+   "score": 62.45,
+   "lat": 38.715015,
+   "lon": -9.140023,
+   "total_reviews": 5600,
+   "corroboration": 0.821,
+   "distinctions": [
+    {
+     "code": "one_star",
+     "label": "One Michelin Star",
+     "short": "★"
+    }
+   ],
+   "distinction_bonus": 3.0,
+   "disagreement": 2.83,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 8.9,
+     "scale_max": 10.0,
+     "reviews": 430,
+     "normalized": 65.95,
+     "url": null
+    },
+    {
+     "platform": "google",
+     "rating": 4.7,
+     "scale_max": 5.0,
+     "reviews": 3120,
+     "normalized": 62.34,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.5,
+     "scale_max": 5.0,
+     "reviews": 1840,
+     "normalized": 59.75,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 4.3,
+     "scale_max": 5.0,
+     "reviews": 210,
+     "normalized": 58.56,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 3
+  },
+  {
+   "rank": 3,
+   "name": "Café Adélia",
+   "score": 58.43,
+   "lat": 38.712,
+   "lon": -9.139503,
+   "total_reviews": 1940,
+   "corroboration": 0.855,
+   "distinctions": [
+    {
+     "code": "bib_gourmand",
+     "label": "Bib Gourmand",
+     "short": "Bib"
+    }
+   ],
+   "distinction_bonus": 2.5,
+   "disagreement": 1.19,
+   "sources": [
+    {
+     "platform": "google",
+     "rating": 4.6,
+     "scale_max": 5.0,
+     "reviews": 1120,
+     "normalized": 58.18,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.4,
+     "scale_max": 5.0,
+     "reviews": 640,
+     "normalized": 56.8,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 4.1,
+     "scale_max": 5.0,
+     "reviews": 180,
+     "normalized": 55.25,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 1
+  },
+  {
+   "rank": 4,
+   "name": "O Pátio das Oliveiras",
+   "score": 57.74,
+   "lat": 38.714207,
+   "lon": -9.145003,
+   "total_reviews": 2700,
+   "corroboration": 0.809,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 1.47,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 8.6,
+     "scale_max": 10.0,
+     "reviews": 260,
+     "normalized": 61.94,
+     "url": null
+    },
+    {
+     "platform": "google",
+     "rating": 4.6,
+     "scale_max": 5.0,
+     "reviews": 1450,
+     "normalized": 58.53,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.5,
+     "scale_max": 5.0,
+     "reviews": 990,
+     "normalized": 59.26,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 2
+  },
+  {
+   "rank": 5,
+   "name": "Cervejaria Silva",
+   "score": 55.75,
+   "lat": 38.71281,
+   "lon": -9.141193,
+   "total_reviews": 4930,
+   "corroboration": 0.828,
+   "distinctions": [
+    {
+     "code": "bib_gourmand",
+     "label": "Bib Gourmand",
+     "short": "Bib"
+    }
+   ],
+   "distinction_bonus": 2.5,
+   "disagreement": 2.3,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 8.0,
+     "scale_max": 10.0,
+     "reviews": 510,
+     "normalized": 58.2,
+     "url": null
+    },
+    {
+     "platform": "google",
+     "rating": 4.4,
+     "scale_max": 5.0,
+     "reviews": 2600,
+     "normalized": 53.04,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.2,
+     "scale_max": 5.0,
+     "reviews": 1500,
+     "normalized": 53.21,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 3.9,
+     "scale_max": 5.0,
+     "reviews": 320,
+     "normalized": 52.53,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 2
+  },
+  {
+   "rank": 6,
+   "name": "Mercado do Peixe",
+   "score": 55.51,
+   "lat": 38.71,
+   "lon": -9.144,
+   "total_reviews": 85,
+   "corroboration": 0.504,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 0.0,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 9.2,
+     "scale_max": 10.0,
+     "reviews": 85,
+     "normalized": 60.93,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": null
+  },
+  {
+   "rank": 7,
+   "name": "Bella Vista",
+   "score": 54.55,
+   "lat": 38.71552,
+   "lon": -9.143775,
+   "total_reviews": 1230,
+   "corroboration": 0.805,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 0.8,
+   "sources": [
+    {
+     "platform": "google",
+     "rating": 4.5,
+     "scale_max": 5.0,
+     "reviews": 720,
+     "normalized": 54.95,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.4,
+     "scale_max": 5.0,
+     "reviews": 510,
+     "normalized": 56.54,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": null
+  },
+  {
+   "rank": 8,
+   "name": "Tasca do Rio",
+   "score": 54.01,
+   "lat": 38.714485,
+   "lon": -9.137235,
+   "total_reviews": 1555,
+   "corroboration": 0.826,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 1.03,
+   "sources": [
+    {
+     "platform": "google",
+     "rating": 4.5,
+     "scale_max": 5.0,
+     "reviews": 1400,
+     "normalized": 55.66,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 4.0,
+     "scale_max": 5.0,
+     "reviews": 155,
+     "normalized": 53.6,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 2
+  },
+  {
+   "rank": 9,
+   "name": "Bistro Azul",
+   "score": 52.68,
+   "lat": 38.713497,
+   "lon": -9.138517,
+   "total_reviews": 1420,
+   "corroboration": 0.75,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 8.51,
+   "sources": [
+    {
+     "platform": "google",
+     "rating": 4.8,
+     "scale_max": 5.0,
+     "reviews": 900,
+     "normalized": 63.04,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.1,
+     "scale_max": 5.0,
+     "reviews": 380,
+     "normalized": 50.88,
+     "url": null
+    },
+    {
+     "platform": "yelp",
+     "rating": 3.2,
+     "scale_max": 5.0,
+     "reviews": 140,
+     "normalized": 42.3,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": null
+  },
+  {
+   "rank": 10,
+   "name": "Sushi Norte",
+   "score": 50.64,
+   "lat": 38.716803,
+   "lon": -9.139,
+   "total_reviews": 760,
+   "corroboration": 0.798,
+   "distinctions": [],
+   "distinction_bonus": 0,
+   "disagreement": 2.21,
+   "sources": [
+    {
+     "platform": "foursquare",
+     "rating": 7.8,
+     "scale_max": 10.0,
+     "reviews": 120,
+     "normalized": 54.29,
+     "url": null
+    },
+    {
+     "platform": "google",
+     "rating": 4.3,
+     "scale_max": 5.0,
+     "reviews": 430,
+     "normalized": 50.0,
+     "url": null
+    },
+    {
+     "platform": "tripadvisor",
+     "rating": 4.0,
+     "scale_max": 5.0,
+     "reviews": 210,
+     "normalized": 49.27,
+     "url": null
+    }
+   ],
+   "address": null,
+   "price_level": 3
+  }
+ ]
+}

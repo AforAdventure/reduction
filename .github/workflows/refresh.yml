@@ -1,0 +1,72 @@
+name: Refresh rankings
+
+# The whole point of the precompute design: the API key lives here, in GitHub
+# Secrets, and is injected into one scheduled job. It never enters the repo and
+# never reaches a browser. The published site is only static JSON.
+
+on:
+  schedule:
+    # Weekly, Monday 04:00 UTC. Restaurant ratings move slowly; refreshing
+    # more often spends quota to change almost nothing.
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Build a single city (slug), e.g. lisbon"
+        required: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -t .
+
+      - name: Build rankings
+        env:
+          TRIPADVISOR_API_KEY: ${{ secrets.TRIPADVISOR_API_KEY }}
+        run: |
+          if [ -z "$TRIPADVISOR_API_KEY" ]; then
+            echo "No API key set; building from fixtures instead."
+            python -m ranker.precompute --dry-run --per-city 200
+          else
+            python -m ranker.precompute ${{ github.event.inputs.only && format('--only {0}', github.event.inputs.only) || '' }}
+          fi
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/data
+          git diff --staged --quiet || git commit -m "chore: refresh rankings"
+          git push
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

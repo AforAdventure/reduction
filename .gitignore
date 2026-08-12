@@ -1,0 +1,27 @@
+# Secrets — never commit these.
+.env
+.env.*
+!.env.example
+*.key
+secrets.json
+
+# Cached API responses. Excluded for two reasons: the cache keys are derived
+# from URLs that contain the API key, and platform terms limit how long you
+# may retain their data. Neither belongs in git history, which is forever.
+.cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local editor/tooling config (contains absolute paths from this machine).
+.claude/

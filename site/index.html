@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Top 10 Restaurants — cross-referenced</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #fbfaf8;
+    --panel: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b6b6b;
+    --line: #e5e2dd;
+    --accent: #b4472f;
+    --good: #2f7d5d;
+    --warn: #b4802f;
+    --michelin: #a4243b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16151a;
+      --panel: #1e1d24;
+      --ink: #ece9e4;
+      --muted: #9a958f;
+      --line: #302e38;
+      --accent: #e0765a;
+      --good: #59b98d;
+      --warn: #d6a349;
+      --michelin: #c4485e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 2rem 1rem 4rem;
+  }
+  main { max-width: 46rem; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); margin: 0 0 1.75rem; font-size: .95rem; }
+  .controls { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  select {
+    font: inherit; padding: .55rem .8rem; border-radius: .5rem;
+    border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+    min-width: 14rem;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: .75rem; padding: 1rem 1.15rem; margin-bottom: .7rem;
+    display: grid; grid-template-columns: 2.2rem 1fr auto; gap: .3rem .9rem;
+    align-items: baseline;
+  }
+  .pos { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 1.05rem; }
+  .name { font-weight: 600; font-size: 1.05rem; }
+  .score { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--accent); }
+  .meta { grid-column: 2 / -1; color: var(--muted); font-size: .84rem; }
+  .sources { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .45rem; }
+  .chip {
+    font-size: .76rem; padding: .18rem .5rem; border-radius: 1rem;
+    border: 1px solid var(--line); color: var(--muted);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .badge {
+    font-size: .8rem; padding: .1rem .45rem; border-radius: .35rem;
+    background: var(--michelin); color: #fff; font-weight: 600;
+    margin-left: .45rem; white-space: nowrap; vertical-align: .05em;
+  }
+  .badge.green { background: var(--good); }
+  .flag { grid-column: 2 / -1; font-size: .82rem; margin-top: .4rem; }
+  .flag.warn { color: var(--warn); }
+  .flag.good { color: var(--good); }
+  footer {
+    margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: .82rem;
+  }
+  footer a { color: inherit; }
+  .status { color: var(--muted); padding: 1.5rem 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Top 10 Restaurants</h1>
+  <p class="sub">
+    Ranked by cross-referencing review platforms — weighted for how much
+    evidence each rating actually rests on, and discounted when the platforms
+    disagree. 50 is average for the city.
+  </p>
+
+  <div class="controls">
+    <select id="city" aria-label="Choose a city"></select>
+  </div>
+
+  <div id="results" class="status">Loading…</div>
+
+  <footer>
+    <p id="generated"></p>
+    <p>
+      Review data from
+      <a href="https://www.tripadvisor.com/" rel="noopener">TripAdvisor</a>.
+      Ratings and review counts are the property of their respective platforms.
+      Michelin distinctions are curated from the published
+      <a href="https://guide.michelin.com/" rel="noopener">Michelin Guide</a>
+      and are not affiliated with or endorsed by Michelin.
+    </p>
+  </footer>
+</main>
+
+<script>
+"use strict";
+
+const cityEl = document.getElementById("city");
+const resultsEl = document.getElementById("results");
+const generatedEl = document.getElementById("generated");
+
+const SCALE = { tripadvisor: 5, google: 5, yelp: 5, foursquare: 10 };
+
+function fmt(n, digits = 1) {
+  return Number(n).toFixed(digits);
+}
+
+// Confidence is the number most worth explaining, so we translate it from a
+// multiplier into a sentence rather than making the reader interpret "0.83".
+function confidenceNote(r) {
+  const sources = r.sources.length;
+  if (sources === 1) {
+    return { cls: "warn", text: "Only one platform has reviewed this — treat with caution." };
+  }
+  if (r.disagreement >= 8) {
+    return { cls: "warn", text: `Platforms disagree noticeably (spread ${fmt(r.disagreement)}).` };
+  }
+  if (sources >= 3 && r.disagreement < 4) {
+    return { cls: "good", text: `${sources} platforms independently agree.` };
+  }
+  return null;
+}
+
+function card(r) {
+  const el = document.createElement("article");
+  el.className = "card";
+
+  const price = r.price_level ? " · " + "$".repeat(r.price_level) : "";
+  const chips = r.sources.map(s => {
+    const max = SCALE[s.platform] || 5;
+    return `<span class="chip">${s.platform} ${fmt(s.rating)}/${max} · ${s.reviews.toLocaleString()}</span>`;
+  }).join("");
+
+  const badges = (r.distinctions || []).map(d =>
+    `<span class="badge${d.code === "green_star" ? " green" : ""}" title="${escapeHtml(d.label)}">${d.short}</span>`
+  ).join("");
+
+  const note = confidenceNote(r);
+
+  el.innerHTML = `
+    <div class="pos">${r.rank}</div>
+    <div class="name">${escapeHtml(r.name)}${badges}</div>
+    <div class="score">${fmt(r.score)}</div>
+    <div class="meta">${r.total_reviews.toLocaleString()} reviews across ${r.sources.length} platform${r.sources.length === 1 ? "" : "s"}${price}</div>
+    <div class="sources">${chips}</div>
+    ${note ? `<div class="flag ${note.cls}">${note.text}</div>` : ""}
+  `;
+  return el;
+}
+
+function escapeHtml(s) {
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+async function loadCity(slug) {
+  resultsEl.className = "status";
+  resultsEl.textContent = "Loading…";
+  try {
+    const res = await fetch(`data/${slug}.json`);
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+
+    resultsEl.className = "";
+    resultsEl.replaceChildren(...data.restaurants.map(card));
+    generatedEl.textContent =
+      `Ranked from ${data.listings_considered} listings · last updated ${new Date(data.generated_at).toLocaleDateString()}`;
+    history.replaceState(null, "", `?city=${slug}`);
+  } catch (err) {
+    resultsEl.className = "status";
+    resultsEl.textContent = "Could not load rankings for that city.";
+  }
+}
+
+async function init() {
+  let index;
+  try {
+    index = await (await fetch("data/index.json")).json();
+  } catch (err) {
+    resultsEl.textContent = "No ranking data found. Run: python3 -m ranker.precompute --dry-run";
+    return;
+  }
+
+  for (const c of index.cities) {
+    const opt = document.createElement("option");
+    opt.value = c.slug;
+    opt.textContent = c.country ? `${c.name}, ${c.country}` : c.name;
+    cityEl.appendChild(opt);
+  }
+
+  const wanted = new URLSearchParams(location.search).get("city");
+  const start = index.cities.find(c => c.slug === wanted) || index.cities[0];
+  if (!start) {
+    resultsEl.textContent = "No cities have been built yet.";
+    return;
+  }
+  cityEl.value = start.slug;
+  cityEl.addEventListener("change", () => loadCity(cityEl.value));
+  loadCity(start.slug);
+}
+
+init();
+</script>
+</body>
+</html>
