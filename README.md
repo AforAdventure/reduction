@@ -1,14 +1,19 @@
-# Cross-referenced restaurant rankings
+# Reduction
 
-Enter a city, get the top 10 restaurants — ranked by combining ratings from
+**Many opinions, simmered down to ten.**
+
+Pick a city, get the top 10 restaurants — ranked by combining ratings from
 several review platforms rather than trusting any single one.
 
-*(Package is called `ranker` as a placeholder until the project is named.)*
+The name is the method. A reduction boils a great many ingredients down until
+what remains is concentrated and true. This does the same to review data:
+thousands of ratings across several platforms, reduced to ten places and one
+number you can interrogate.
 
 ## Try it
 
 ```bash
-python3 -m ranker.cli Lisbon --limit 10 --min-platforms 2
+python3 -m reduction.cli Lisbon --limit 10 --min-platforms 2
 ```
 
 ```bash
@@ -39,12 +44,15 @@ network, so the whole thing is testable without mocks.
 
 | File | Job |
 | --- | --- |
-| `ranker/models.py` | `Listing` vs `Venue`, and each platform's rating profile |
-| `ranker/normalize.py` | Name cleaning, name similarity, Bayesian shrinkage, scale conversion |
-| `ranker/matching.py` | Haversine distance, spatial blocking, union-find clustering |
-| `ranker/scoring.py` | Evidence weighting, corroboration, disagreement discount |
-| `ranker/pipeline.py` | Wires the stages together; output formatting |
-| `ranker/providers/` | One module per data source; all satisfy `Provider` |
+| `reduction/models.py` | `Listing` vs `Venue`, `Distinction`, and each platform's rating profile |
+| `reduction/normalize.py` | Name cleaning, name similarity, Bayesian shrinkage, scale conversion |
+| `reduction/matching.py` | Haversine distance, spatial blocking, union-find clustering |
+| `reduction/scoring.py` | Evidence weighting, corroboration, disagreement discount |
+| `reduction/distinctions.py` | Michelin awards, matched to venues after clustering |
+| `reduction/pipeline.py` | Wires the stages together; output formatting |
+| `reduction/precompute.py` | Builds the static JSON the site serves |
+| `reduction/http.py` | Throttled, retrying, disk-cached JSON client |
+| `reduction/providers/` | One module per data source; all satisfy `Provider` |
 | `data/fixtures/` | Synthetic city data (fictional venues, invented ratings) |
 
 ## Reading the output
@@ -94,8 +102,8 @@ Never commit `.env` — it is gitignored. On GitHub the key goes in
 never reaches a browser: the published site is static JSON only.
 
 ```bash
-python3 -m ranker.precompute --dry-run --per-city 200   # fixtures, no key
-python3 -m ranker.precompute --only lisbon              # live, needs key
+python3 -m reduction.precompute --dry-run --per-city 200   # fixtures, no key
+python3 -m reduction.precompute --only lisbon              # live, needs key
 python3 serve.py                                        # http://localhost:8137
 ```
 

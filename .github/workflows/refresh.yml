@@ -43,9 +43,9 @@ jobs:
         run: |
           if [ -z "$TRIPADVISOR_API_KEY" ]; then
             echo "No API key set; building from fixtures instead."
-            python -m ranker.precompute --dry-run --per-city 200
+            python -m reduction.precompute --dry-run --per-city 200
           else
-            python -m ranker.precompute ${{ github.event.inputs.only && format('--only {0}', github.event.inputs.only) || '' }}
+            python -m reduction.precompute ${{ github.event.inputs.only && format('--only {0}', github.event.inputs.only) || '' }}
           fi
 
       - name: Commit refreshed data

@@ -1,7 +1,7 @@
 """Command line entry point.
 
-    python3 -m ranker.cli Lisbon
-    python3 -m ranker.cli Lisbon --limit 5 --min-platforms 2
+    python3 -m reduction.cli Lisbon
+    python3 -m reduction.cli Lisbon --limit 5 --min-platforms 2
 """
 
 from __future__ import annotations

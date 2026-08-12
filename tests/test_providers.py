@@ -12,12 +12,12 @@ from __future__ import annotations
 
 import unittest
 
-from ranker.http import HttpError
-from ranker.models import Platform
-from ranker.precompute import build_city, slugify
-from ranker.providers.base import ProviderError
-from ranker.providers.tripadvisor import TripAdvisorProvider, _parse_price
-from ranker.providers import FixtureProvider
+from reduction.http import HttpError
+from reduction.models import Platform
+from reduction.precompute import build_city, slugify
+from reduction.providers.base import ProviderError
+from reduction.providers.tripadvisor import TripAdvisorProvider, _parse_price
+from reduction.providers import FixtureProvider
 
 SEARCH = {
     "data": [

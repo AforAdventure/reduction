@@ -12,12 +12,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from ranker.distinctions import MichelinIndex
-from ranker.matching import cluster_listings
-from ranker.models import Distinction, Listing, Platform
-from ranker.pipeline import rank
-from ranker.providers import FixtureProvider
-from ranker.scoring import score_venue
+from reduction.distinctions import MichelinIndex
+from reduction.matching import cluster_listings
+from reduction.models import Distinction, Listing, Platform
+from reduction.pipeline import rank
+from reduction.providers import FixtureProvider
+from reduction.scoring import score_venue
 
 
 def listing(platform, pid, name, lat, lon, rating, reviews):

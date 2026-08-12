@@ -44,7 +44,7 @@ class JsonClient:
         timeout: float = 15.0,
         cache_dir: Optional[Path] = None,
         cache_ttl: float = 7 * 24 * 3600,
-        user_agent: str = "restaurant-ranker/0.1",
+        user_agent: str = "reduction/0.1",
     ) -> None:
         self.min_interval = min_interval
         self.max_retries = max_retries

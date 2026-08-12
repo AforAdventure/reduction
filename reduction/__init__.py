@@ -1,6 +1,8 @@
-"""Cross-referenced restaurant rankings.
+"""Reduction — cross-referenced restaurant rankings.
 
-The package name is a placeholder until the project is named.
+Named for what it does. A reduction simmers a great many ingredients down
+until what remains is concentrated and true; this simmers a great many
+opinions down to ten.
 """
 
 from .models import Listing, Platform, ScoredVenue, Venue

@@ -12,18 +12,18 @@ from __future__ import annotations
 
 import unittest
 
-from ranker.matching import DisjointSet, cluster_listings, haversine_m, is_match
-from ranker.models import PROFILES, Listing, Platform
-from ranker.normalize import (
+from reduction.matching import DisjointSet, cluster_listings, haversine_m, is_match
+from reduction.models import PROFILES, Listing, Platform
+from reduction.normalize import (
     name_similarity,
     name_tokens,
     normalize_name,
     shrink_rating,
     strip_accents,
 )
-from ranker.pipeline import rank
-from ranker.providers import FixtureProvider
-from ranker.scoring import platform_score, score_venue
+from reduction.pipeline import rank
+from reduction.providers import FixtureProvider
+from reduction.scoring import platform_score, score_venue
 
 
 def listing(platform, pid, name, lat, lon, rating, reviews):

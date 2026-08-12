@@ -14,8 +14,8 @@ is no key to leak because there is no key in the browser.
 The cost of that choice is honest and worth stating: a fixed city list, and
 data that is as fresh as your last run.
 
-    python3 -m ranker.precompute --dry-run
-    TRIPADVISOR_API_KEY=... python3 -m ranker.precompute --limit 10
+    python3 -m reduction.precompute --dry-run
+    TRIPADVISOR_API_KEY=... python3 -m reduction.precompute --limit 10
 """
 
 from __future__ import annotations

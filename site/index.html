@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Top 10 Restaurants — cross-referenced</title>
+<title>Reduction — the top 10 restaurants in any city</title>
 <style>
   :root {
     color-scheme: light dark;
@@ -39,7 +39,8 @@
     padding: 2rem 1rem 4rem;
   }
   main { max-width: 46rem; margin: 0 auto; }
-  h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -0.02em; }
+  h1 { font-size: 1.75rem; margin: 0 0 .15rem; letter-spacing: -0.03em; }
+  .tag { margin: 0 0 .9rem; color: var(--accent); font-size: .95rem; font-style: italic; }
   .sub { color: var(--muted); margin: 0 0 1.75rem; font-size: .95rem; }
   .controls { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
   select {
@@ -82,7 +83,8 @@
 </head>
 <body>
 <main>
-  <h1>Top 10 Restaurants</h1>
+  <h1>Reduction</h1>
+  <p class="tag">Many opinions, simmered down to ten.</p>
   <p class="sub">
     Ranked by cross-referencing review platforms — weighted for how much
     evidence each rating actually rests on, and discounted when the platforms
@@ -194,7 +196,7 @@ async function init() {
   try {
     index = await (await fetch("data/index.json")).json();
   } catch (err) {
-    resultsEl.textContent = "No ranking data found. Run: python3 -m ranker.precompute --dry-run";
+    resultsEl.textContent = "No ranking data found. Run: python3 -m reduction.precompute --dry-run";
     return;
   }
 
